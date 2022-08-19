@@ -10,13 +10,16 @@ onHide(() => {
   console.log('App Hide')
 })
 </script>
-<style>
+<style lang="scss">
 * {
   text-transform: capitalize;
-  font-size: 24rpx;
   /* capitalize 单词首字母大写 */
   /* uppercase 所有字母大写 */
   /* lowercase 所有字母小写 */
+}
+.default {
+  color: white;
+  font-size: 24rpx;
 }
 .content {
   padding: 32rpx 32rpx;

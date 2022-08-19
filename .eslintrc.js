@@ -1,5 +1,5 @@
 // 需要安装依赖:
-const { defineConfig } = require('eslint-define-config');
+const { defineConfig } = require('eslint-define-config')
 
 module.exports = defineConfig({
   root: true,
@@ -80,4 +80,4 @@ module.exports = defineConfig({
     'no-lone-blocks': 2, //禁止 不必要的块嵌套
     'no-redeclare': 2, //禁止重复声明变量
   },
-});
+})
