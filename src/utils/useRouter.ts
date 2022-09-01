@@ -1,5 +1,5 @@
-import pages from '@/pages.json'
+import pages from "@/pages.json";
 
 export default function test() {
-  console.log(pages.pages)
+  console.log(pages.pages);
 }

@@ -1,32 +1,32 @@
 // 返回上一页
 export default function goBack(second = 0, save, type = 'redirectTo') {
   setTimeout(() => {
-    let source = uni.getStorageSync('source')
+    let source = uni.getStorageSync('source');
     if (!source) {
-      source = '/'
+      source = '/';
     }
     if (!save || !source) {
-      history.back()
+      history.back();
     }
     if (source) {
       uni.redirectTo({
         url: source,
         success() {
-          uni.removeStorageSync('source')
+          uni.removeStorageSync('source');
         },
         fail() {
-          console.log('跳转失败,尝试Tab跳转,url: ' + source)
+          console.log('跳转失败,尝试Tab跳转,url: ' + source);
           uni.switchTab({
             url: source,
             success() {
-              uni.removeStorageSync('source')
+              uni.removeStorageSync('source');
             },
             fail() {
-              console.log('Tab跳转失败,url: ' + source)
+              console.log('Tab跳转失败,url: ' + source);
             },
-          })
+          });
         },
-      })
+      });
     }
-  }, second * 1000)
+  }, second * 1000);
 }

@@ -1,27 +1,27 @@
 <template>
   <view class="container">
     <van-button @click="showPopupsClick">Popups</van-button>
-    <Popups v-if="popupsStatus" @confirmClick="submit"> </Popups>
+    <Popups v-if="popupsStatus" @confirmClick="submit" />
   </view>
 </template>
 
 <script setup lang="ts">
-import usePopupsStatus from '@/components/Popups/hooks'
+import usePopupsStatus from "@/components/Popups/hooks";
 
-const { popupsStatus, popupsType } = usePopupsStatus()
+const { popupsStatus, popupsType } = usePopupsStatus();
 const showPopupsClick = () => {
-  popupsStatus.value = true
+  popupsStatus.value = true;
 }
 const submit = () => {
   setTimeout(() => {
-    popupsType.value = 'loading'
+    popupsType.value = "loading";
     setTimeout(() => {
-      popupsType.value = 'message'
+      popupsType.value = "message";
       setTimeout(() => {
-        popupsStatus.value = false
-      }, 2000)
-    }, 2000)
-  }, 100)
+        popupsStatus.value = false;
+      }, 2000);
+    }, 2000);
+  }, 100);
 }
 </script>
 

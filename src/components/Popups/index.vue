@@ -5,13 +5,15 @@
         <view class="input-row"><input v-model="address" type="text" /></view>
         <view class="input-row"><input v-model="amount" type="text" /></view>
         <view>
-          <van-button @click="confirmClick">{{ t('confirm') }}</van-button>
-          <van-button @click="closeClick">{{ t('close') }}</van-button>
+          <van-button @click="confirmClick">{{ t("confirm") }}</van-button>
+          <van-button @click="closeClick">{{ t("close") }}</van-button>
         </view>
       </view>
     </template>
     <template v-if="popupsType === 'loading'">
-      <van-loading vertical :color="messageColor">{{ t(popupsLoadingMessage) }}</van-loading>
+      <van-loading vertical :color="messageColor">{{
+        t(popupsLoadingMessage)
+      }}</van-loading>
     </template>
     <template v-if="popupsType === 'message'">
       <view class="animate__animated animate__bounce default">
@@ -22,43 +24,44 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import usePopupsStatus from './hooks'
-const { popupsStatus, popupsType, popupsMessage, popupsLoadingMessage } = usePopupsStatus()
-const { t } = useI18n()
+import { onBeforeUnmount, ref } from "vue";
+import { useI18n } from "vue-i18n";
+import usePopupsStatus from "./hooks";
+const { popupsStatus, popupsType, popupsMessage, popupsLoadingMessage } =
+  usePopupsStatus();
+const { t } = useI18n();
 defineProps({
   background: {
     type: String,
-    default: 'rgba(0, 0, 0, 0.5)',
+    default: "rgba(0, 0, 0, 0.5)",
   },
   messageColor: {
     type: String,
-    default: 'rgba(255, 255, 255, 1)',
+    default: "rgba(255, 255, 255, 1)",
   },
-})
+});
 
-const emit = defineEmits(['confirmClick'])
+const emit = defineEmits(["confirmClick"]);
 const confirmClick = () => {
-  emit('confirmClick')
-}
+  emit("confirmClick");
+};
 const closeClick = () => {
-  popupsStatus.value = false
-}
+  popupsStatus.value = false;
+};
 
-const address = ref<string>('')
-const amount = ref<number | undefined | null>(null)
+const address = ref<string>("");
+const amount = ref<number | undefined | null>(null);
 
 defineExpose({
   address,
   amount,
-})
+});
 // 组件卸载前恢复默认
 onBeforeUnmount(() => {
-  address.value = ''
-  amount.value = null
-  popupsType.value = 'default'
-})
+  address.value = "";
+  amount.value = null;
+  popupsType.value = "default";
+});
 </script>
 
 <style lang="scss" scoped>
