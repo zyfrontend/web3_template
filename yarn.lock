@@ -348,6 +348,11 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
+"@dcloudio/types@^2.0.16":
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/@dcloudio/types/-/types-2.6.12.tgz#6c9559b9e65483f355dd61cb88fe8c14c8e61189"
+  integrity sha512-mrCMwcINy1IFjU9VUqLeWBkj404yWs5paLDttBcA+eqUjanuUQbBcTVPqlrGgkyzLXDcV2oDDZRSNxNpXi4kMQ==
+
 "@dcloudio/types@^3.0.7":
   version "3.0.13"
   resolved "https://registry.yarnpkg.com/@dcloudio/types/-/types-3.0.13.tgz#31642c203b7f9a71e85e427683ec35d933174440"
@@ -3911,6 +3916,13 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
+
+luch-request@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/luch-request/-/luch-request-3.0.8.tgz#112e0abc065d822c7a3dbe9b9be8f43d85edbe3e"
+  integrity sha512-5ZVp1y4tFaizbGMOuQwbeyfHnf4PhQAwQ3S1Fm1tS7juMoB14pXslxWriElhiSq6ytYYW0KVC8RShfHiNujFcQ==
+  dependencies:
+    "@dcloudio/types" "^2.0.16"
 
 magic-string@^0.25.7:
   version "0.25.9"

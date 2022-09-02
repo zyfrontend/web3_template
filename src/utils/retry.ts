@@ -6,11 +6,11 @@
  */
 function _delay(second = 4000) {
   // 延迟second
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(function () {
-      resolve();
-    }, second);
-  });
+      resolve()
+    }, second)
+  })
 }
 
 /**
@@ -25,17 +25,17 @@ function _delay(second = 4000) {
 function _recursion(promise, resolve, reject, count, totalCount) {
   _delay().then(() => {
     promise()
-      .then((res) => {
-        resolve(res);
+      .then(res => {
+        resolve(res)
       })
-      .catch((err) => {
+      .catch(err => {
         if (count >= totalCount) {
-          reject(err);
-          return;
+          reject(err)
+          return
         }
-        _recursion(promise, resolve, reject, count + 1, totalCount);
-      });
-  });
+        _recursion(promise, resolve, reject, count + 1, totalCount)
+      })
+  })
 }
 
 /**
@@ -46,19 +46,19 @@ function _recursion(promise, resolve, reject, count, totalCount) {
  */
 function requestTry(promise, totalCount) {
   return new Promise((resolve, reject) => {
-    const count = 1;
+    const count = 1
     promise()
-      .then((res) => {
-        resolve(res);
+      .then(res => {
+        resolve(res)
       })
-      .catch((err) => {
+      .catch(err => {
         if (count >= totalCount) {
-          reject(err);
-          return;
+          reject(err)
+          return
         }
-        _recursion(promise, resolve, reject, count + 2, totalCount);
-      });
-  });
+        _recursion(promise, resolve, reject, count + 2, totalCount)
+      })
+  })
 }
 
-export default requestTry;
+export default requestTry

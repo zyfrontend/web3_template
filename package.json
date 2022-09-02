@@ -2,6 +2,8 @@
   "name": "uni-preset-vue",
   "version": "0.0.0",
   "scripts": {
+    "pre": "npx prettier --write .",
+    "pre-lint": "npx eslint --fix .",
     "dev:app": "uni -p app",
     "dev:custom": "uni -p",
     "dev:h5": "uni",
@@ -46,6 +48,7 @@
     "@dcloudio/uni-quickapp-webview": "3.0.0-alpha-3040820220424001",
     "animate.css": "^4.1.1",
     "clipboard": "^2.0.11",
+    "luch-request": "^3.0.8",
     "pinia": "^2.0.19",
     "sass": "^1.54.4",
     "vant": "^3.5.4",
