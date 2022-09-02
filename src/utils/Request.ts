@@ -17,7 +17,7 @@ http.interceptors.request.use(
     }
     return config
   },
-  (error: HttpError) => {
+  (error: any) => {
     return Promise.resolve(error)
   }
 )
