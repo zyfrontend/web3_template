@@ -43,12 +43,15 @@ async function connectWallet() {
   })
 }
 // 获取区块信息
-function getBlockInfo() {
-  web3.eth.getBlock(48, function (error, result) {
-    if (!error) {
-      return result
-    }
-    console.error(error)
+function getTransaction(transactionHash: string) {
+  return new Promise((resolve, reject) => {
+    web3.eth.getTransaction(transactionHash, function (error, result) {
+      if (!error) {
+        resolve(result)
+      } else {
+        reject(error)
+      }
+    })
   })
 }
 
@@ -117,7 +120,7 @@ async function connectWeb3(config: any) {
   // 判断链对不，链不对就请求切换网络，或者添加网络，
   if (window.ethereum) {
     try {
-      await window.ethereum.request({
+      await window.ethereum as any.request({
         method: 'wallet_switchEthereumChain',
         params: [
           {
@@ -126,9 +129,9 @@ async function connectWeb3(config: any) {
         ]
       })
     } catch (e) {
-      if ((e as any.code) === 4902) {
+      if (e as any.code === 4902) {
         try {
-          await window.ethereum.request({
+          await window.ethereum as any.request({
             method: 'wallet_addEthereumChain',
             params: [
               {
@@ -147,9 +150,7 @@ async function connectWeb3(config: any) {
         } catch (ee) {
           //
         }
-      } else if ((e as any.code) === 4001) {
-        return
-      }
+      } else if (e as any.code === 4001) {return}
     }
   }
   // 链接钱包
@@ -190,8 +191,9 @@ async function mainCurrencyTransaction(obj: mainCurrencyTransactionType) {
   })
 }
 export {
+  Web3,
   web3,
-  getBlockInfo,
+  getTransaction,
   readContract,
   writeContract,
   connectWallet,
