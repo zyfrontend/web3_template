@@ -1,5 +1,5 @@
 // 返回上一页
-export default function goBack(second = 0, save, type = 'redirectTo') {
+export default function goBack(second = 0, save) {
   setTimeout(() => {
     let source = uni.getStorageSync('source')
     if (!source) {

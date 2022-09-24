@@ -1,5 +1,5 @@
 // 获取参数
-export default function getQueryString(name) {
+export default function getQueryString(name: string) {
   const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`, 'i')
   if (window.location.href.split('?').length > 1) {
     const r = window.location.href.split('?')[1].match(reg)

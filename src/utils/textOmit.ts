@@ -1,4 +1,4 @@
-export default function textOmit(textValue, to, from) {
+export default function textOmit(textValue: string, to: number, from: number) {
   /**
    * 实现功能
    * 将地址缩短 使用 ... 进行拼接

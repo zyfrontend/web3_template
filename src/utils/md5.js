@@ -10,10 +10,15 @@ export default function md5(sMessage) {
     let lX8
     let lY8
     let lResult
+    // eslint-disable-next-line prefer-const
     lX8 = lX & 0x80000000
+    // eslint-disable-next-line prefer-const
     lY8 = lY & 0x80000000
+    // eslint-disable-next-line prefer-const
     lX4 = lX & 0x40000000
+    // eslint-disable-next-line prefer-const
     lY4 = lY & 0x40000000
+    // eslint-disable-next-line prefer-const
     lResult = (lX & 0x3fffffff) + (lY & 0x3fffffff)
     if (lX4 & lY4) {
       return lResult ^ 0x80000000 ^ lX8 ^ lY8

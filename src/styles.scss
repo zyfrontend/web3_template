@@ -1,0 +1,55 @@
+:root {
+  --van-popup-background-color: rgba(0, 0, 0, 1) !important;
+}
+
+.flex-s-c {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-c-c {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flex {
+  flex: 1;
+}
+.h-88 {
+  height: 88rpx;
+}
+.font-default {
+  font-size: 24rpx;
+  color: white;
+}
+
+.padding-l-r-24 {
+  padding: 0 24rpx;
+  box-sizing: border-box;
+}
+.padding-l-r-32 {
+  padding: 0 32rpx;
+  box-sizing: border-box;
+}
+.padding-t-b-24 {
+  padding: 24rpx 0;
+  box-sizing: border-box;
+}
+.padding-24 {
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+.padding-32 {
+  padding: 32rpx;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100vw;
+  height: calc(100% - 88rpx);
+}
+
+.default {
+  color: white;
+  font-size: 24rpx;
+}

@@ -1,8 +1,7 @@
 import Web3 from 'web3/dist/web3.min.js'
-import { AbiItem } from 'web3-utils'
-
+// import Web3 from 'web3'
+import * as types from '@/types/web3.types'
 // web3 ts的类型定义
-import { ContractOptions } from 'web3-eth-contract'
 // 检查是否是新的MetaMask 或 DApp浏览器
 let web3Provider
 async function init() {
@@ -13,7 +12,7 @@ async function init() {
       await window.ethereum.enable()
     } catch (error) {
       // 用户不授权时
-      console.error('User denied account access')
+      // console.error('User denied account access')
     }
   } else if (window.web3) {
     // 老版 MetaMask Legacy dapp browsers...
@@ -27,19 +26,21 @@ const web3 = new Web3(web3Provider)
 
 // 链接钱包
 async function connectWallet() {
-  return new Promise(async (resolve, reject) => {
-    const accounts = await window.ethereum
-      .request({
+  return new Promise((resolve, reject) => {
+    window?.ethereum
+      ?.request({
         method: 'eth_requestAccounts'
       })
-      .catch((err: any) => {
+      .then(accounts => {
+        if (accounts && accounts[0]) {
+          resolve(accounts[0])
+        } else {
+          reject()
+        }
+      })
+      .catch(err => {
         reject(err)
       })
-    if (accounts && accounts[0]) {
-      resolve(accounts[0])
-    } else {
-      reject()
-    }
   })
 }
 // 获取区块信息
@@ -55,56 +56,42 @@ function getTransaction(transactionHash: string) {
   })
 }
 
-// 读合约方法
-interface readContractType {
-  abi: AbiItem // 合约abi
-  contract: string // 合约地址
-  method: string // 合约方法
-  walletAddress: string // 钱包地址
-  options?: ContractOptions // 合约配置 类似gas费那些
-  config?: {
-    account?: string
-    quantity?: string
-  }
-}
-function readContract(obj: readContractType) {
+function readContract(obj: types.readContractType) {
   const { config } = obj
   // 创建合约对象
+  // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
-    await new web3.eth.Contract(obj.abi, obj.contract, obj.options).methods[obj.method](
-      obj.walletAddress
-    ).call((error: any, result: string) => {
+    // console.log(await new web3.eth.Contract(JSON.parse(obj.abi), obj.contract, obj.options).methods)
+    await new web3.eth.Contract(JSON.parse(obj.abi), obj.contract, obj.options).methods[obj.method](
+      ...Array.from(config)
+    ).call((error: never, result: string) => {
       if (!error) {
-        resolve(Web3.utils.fromWei(result, 'ether'))
+        if (obj.decimal) {
+          resolve(Web3.utils.fromWei(result, 'ether'))
+        } else {
+          resolve(result)
+        }
       } else {
         reject(error)
       }
     })
   })
 }
-// 写合约方法
 
-interface writeContractType {
-  abi: AbiItem // 合约abi
-  contract: string // 合约地址
-  method: string // 合约方法
-  walletAddress?: string | undefined // 钱包地址
-  config?: string[] // 合约方法需要的参数,需要按照该方法的参数顺序进行传参
-  options?: ContractOptions // 合约配置 类似gas费那些
-  // process?: boolean // 数据预处理
-  // unlimited?: boolean
-}
-async function writeContract(obj: writeContractType) {
+async function writeContract(obj: types.writeContractType) {
   const { config } = obj
   // 创建合约对象
+  // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
+    console.log(config)
+    // console.log(await new web3.eth.Contract(JSON.parse(obj.abi), obj.contract, obj.options).methods)
     await new web3.eth.Contract(JSON.parse(obj.abi), obj.contract, obj.options).methods[obj.method](
       ...Array.from(config)
     ).send(
       {
         from: obj.walletAddress
       },
-      (error: any, transactionHash: string) => {
+      (error: never, transactionHash: string) => {
         if (!error) {
           // 成功执行，返回交易号
           resolve(transactionHash)
@@ -116,58 +103,52 @@ async function writeContract(obj: writeContractType) {
     )
   })
 }
-async function connectWeb3(config: any) {
-  // 判断链对不，链不对就请求切换网络，或者添加网络，
-  if (window.ethereum) {
-    try {
-      await window.ethereum as any.request({
-        method: 'wallet_switchEthereumChain',
-        params: [
-          {
-            chainId: Web3.utils.numberToHex(config.chainId) // 目标链ID
-          }
-        ]
-      })
-    } catch (e) {
-      if (e as any.code === 4902) {
-        try {
-          await window.ethereum as any.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: Web3.utils.numberToHex(config.chainId), // 目标链ID
-                chainName: config.chainName,
-                nativeCurrency: {
-                  name: config.symbol,
-                  symbol: config.symbol,
-                  decimals: config.decimals
-                },
-                rpcUrls: [config.host], // 节点
-                blockExplorerUrls: [config.blockExplorerUrls]
-              }
-            ]
-          })
-        } catch (ee) {
-          //
+
+async function connectWeb3(config: types.connectWeb3Type) {
+  // console.log(web3.eth.net.getId())
+
+  // console.log(window.tronWeb)
+  // // 判断链对不，链不对就请求切换网络，或者添加网络，
+  // if (window.ethereum) {
+  window?.ethereum?.request({
+    method: 'wallet_addEthereumChain', // Metamask的api名称
+    params: [
+      {
+        chainId: `0x${config.chainId.toString(16)}`, // 网络id，16进制的字符串
+        chainName: config.chainName, // 添加到钱包后显示的网络名称
+        rpcUrls: [
+          config.host // rpc地址
+        ],
+        iconUrls: [
+          'https://testnet.hecoinfo.com/favicon.png' // 网络的图标，暂时没看到在哪里会显示
+        ],
+        blockExplorerUrls: [
+          config.blockExplorerUrl // 网络对应的区块浏览器
+        ],
+        nativeCurrency: {
+          // 网络主币的信息
+          name: config.symbol,
+          symbol: config.symbol,
+          decimals: config.decimals
         }
-      } else if (e as any.code === 4001) {return}
-    }
-  }
+      }
+    ]
+  })
+  // } else if (window.tronWeb) {
+  //   console.log(window.tronWeb)
+  //   const tronWeb = window.tronWeb
+  //   const walletAddress = tronWeb.defaultAddress.base58
+  //   console.log(walletAddress)
+  // }
   // 链接钱包
+  // eslint-disable-next-line no-return-await
   return await connectWallet()
 }
 
-// 主币交易
-
-interface mainCurrencyTransactionType {
-  from: string
-  to: string
-  value: string
-}
-async function mainCurrencyTransaction(obj: mainCurrencyTransactionType) {
+async function mainCurrencyTransaction(obj: types.mainCurrencyTransactionType) {
   return new Promise((resolve, reject) => {
-    window.ethereum
-      .request({
+    window?.ethereum
+      ?.request({
         method: 'eth_sendTransaction',
         params: [
           {
@@ -180,7 +161,7 @@ async function mainCurrencyTransaction(obj: mainCurrencyTransactionType) {
           }
         ]
       })
-      .then((transactionHash: string) => {
+      .then(transactionHash => {
         // 成功执行
         resolve(transactionHash)
       })
@@ -188,6 +169,33 @@ async function mainCurrencyTransaction(obj: mainCurrencyTransactionType) {
         // 失败执行
         reject()
       })
+  })
+}
+
+function network(config: types.connectWeb3Type) {
+  window?.ethereum?.request({
+    method: 'wallet_addEthereumChain', // Metamask的api名称
+    params: [
+      {
+        chainId: `0x${config.chainId.toString(16)}`, // 网络id，16进制的字符串
+        chainName: config.chainName, // 添加到钱包后显示的网络名称
+        rpcUrls: [
+          config.host // rpc地址
+        ],
+        iconUrls: [
+          'https://testnet.hecoinfo.com/favicon.png' // 网络的图标，暂时没看到在哪里会显示
+        ],
+        blockExplorerUrls: [
+          config.blockExplorerUrl // 网络对应的区块浏览器
+        ],
+        nativeCurrency: {
+          // 网络主币的信息
+          name: config.symbol,
+          symbol: config.symbol,
+          decimals: config.decimals
+        }
+      }
+    ]
   })
 }
 export {
@@ -198,5 +206,6 @@ export {
   writeContract,
   connectWallet,
   connectWeb3,
-  mainCurrencyTransaction
+  mainCurrencyTransaction,
+  network
 }
