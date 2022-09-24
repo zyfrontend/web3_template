@@ -74,7 +74,7 @@
       "disableHostCheck": true,
       "proxy": {
         "/api": {
-          "target": "https://nusic.tianyantu.com/",
+          "target": "https://**/",
           "changeOrigin": true,
           "secure": false,
           "pathRewrite": {
@@ -83,7 +83,7 @@
         }
       }
     },
-    "title": "NUSIC",
+    "title": "**",
     "router": {
       "mode": "hash",
       "base": "/h5/"
