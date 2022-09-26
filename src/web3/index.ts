@@ -46,7 +46,7 @@ async function connectWallet() {
 // 获取区块信息
 function getTransaction(transactionHash: string) {
   return new Promise((resolve, reject) => {
-    web3.eth.getTransaction(transactionHash, function (error, result) {
+    web3.eth.getTransactionReceipt(transactionHash, function (error, result) {
       if (!error) {
         resolve(result)
       } else {

@@ -1,7 +1,8 @@
 // 代币授权业务
 import useStatus from '@/hooks/useStatus'
-import { writeContract, readContract } from '@/web3'
+import { writeContract, readContract, getTransaction } from '@/web3'
 import * as types from './types'
+import * as web3Types from '@/types/web3.types'
 const { loadingStatus } = useStatus()
 
 // 无限制授权
@@ -111,4 +112,41 @@ const Approve = (config: types.Config, fn: () => void) => {
   queryApproveTokenA()
 }
 
-export { Approve }
+const QueryOrder = (
+  config: web3Types.writeContractType,
+  outputPay: () => void,
+  createOrder: () => void
+) => {
+  writeContract({
+    abi: config.abi,
+    contract: config.contract,
+    walletAddress: config.walletAddress,
+    method: config.method,
+    config: config.config
+  })
+    .then(async transactionNumber => {
+      // 创建订单
+      console.log('开始创建订单')
+      createOrder()
+      const queryOrder = async () => {
+        const res = await getTransaction(transactionNumber)
+        console.log(res.Status)
+        if (res.blockHash !== null) {
+          //  成功
+          console.log('支付成功')
+          await outputPay()
+        } else {
+          setTimeout(() => {
+            queryOrder()
+          }, 2000)
+        }
+      }
+      queryOrder()
+    })
+    .catch(err => {
+      loadingStatus.value = false
+      console.log(err)
+    })
+}
+
+export { Approve, QueryOrder }
