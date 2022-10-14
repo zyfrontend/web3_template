@@ -41,6 +41,16 @@ async function connectWallet() {
     } else {
       reject()
     }
+    // 监听钱包切换
+    window.ethereum.on('accountsChanged', function (accounts) {
+      console.log('钱包切换', accounts)
+      window.location.reload()
+    })
+    //监听链网络改变
+    window.ethereum.on('chainChanged', () => {
+      console.log('链切换')
+      window.location.reload()
+    })
   })
 }
 // 获取区块信息
