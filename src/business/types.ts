@@ -1,4 +1,5 @@
 import { AbiItem } from 'web3-utils'
+import { writeContractType } from '@/web3'
 // 代币授权配置信息
 interface Config {
   tokenA: {
@@ -19,6 +20,8 @@ interface Config {
   address: string
   // 可选：授权金额,默认无限制
   quota?: string
+  // 业务配置
+  businessConfig: writeContractType
 }
 
 export { Config }

@@ -1,7 +1,7 @@
 interface userLoginTypes {
   address: string
   sign: string
-  code?: string | boolean
+  code?: string | boolean | null
 }
 
 // interface applyTypes {}

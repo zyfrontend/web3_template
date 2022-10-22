@@ -24,5 +24,14 @@ export default defineConfig({
   esbuild: {
     pure: ['console.log'],
     drop: ['debugger']
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://depm.tianyantu.com/api',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, '')
+      }
+    }
   }
 })
