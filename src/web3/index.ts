@@ -24,10 +24,8 @@ async function init() {
 }
 init()
 const web3 = new Web3(web3Provider)
-console.log(web3)
 // 链接钱包
 async function connectWallet() {
-  console.log('链接钱包')
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
     const accounts = await window.ethereum
@@ -38,6 +36,7 @@ async function connectWallet() {
         reject(err)
       })
     if (accounts && accounts[0]) {
+      console.log('钱包连接成功')
       resolve(accounts[0])
     } else {
       reject()
@@ -138,31 +137,6 @@ async function writeContract(obj: writeContractType) {
 
 async function connectWeb3(config: any) {
   await addNetwork(config)
-  // window.ethereum.request({
-  //   method: 'wallet_addEthereumChain', // Metamask的api名称
-  //   params: [
-  //     {
-  //       chainId: `0x${config.chainId.toString(16)}`, // 网络id，16进制的字符串
-  //       chainName: config.chainName, // 添加到钱包后显示的网络名称
-  //       rpcUrls: [
-  //         config.host // rpc地址
-  //       ],
-  //       iconUrls: [
-  //         'https://testnet.hecoinfo.com/favicon.png' // 网络的图标，暂时没看到在哪里会显示
-  //       ],
-  //       blockExplorerUrls: [
-  //         config.blockExplorerUrl // 网络对应的区块浏览器
-  //       ],
-  //       nativeCurrency: {
-  //         // 网络主币的信息
-  //         name: config.symbol,
-  //         symbol: config.symbol,
-  //         decimals: config.decimals
-  //       }
-  //     }
-  //   ]
-  // })
-  // 链接钱包
   // eslint-disable-next-line no-return-await
   return await connectWallet()
 }
@@ -230,15 +204,12 @@ function network(config: any) {
 }
 async function addNetwork(config: any) {
   try {
-    console.log('网络切换')
-    const res = await web3.currentProvider.request({
+    await web3.currentProvider.request({
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: web3.utils.numberToHex(config.chainId) }]
     })
-    console.log(res)
   } catch (switchErr: any) {
     if (switchErr.code === 4902) {
-      console.log('网络添加')
       await web3.currentProvider.request({
         method: 'wallet_addEthereumChain',
         params: [
@@ -246,9 +217,7 @@ async function addNetwork(config: any) {
             chainId: web3.utils.numberToHex(config.chainId),
             chainName: config.chainName,
             // rpcUrls: config.rpcUrls,
-            rpcUrls: [
-              web3.currentProvider.networkVersion === config.chainId ? '' : config.rpcUrls // rpc地址
-            ],
+            rpcUrls: web3.currentProvider.networkVersion === config.chainId ? '' : config.rpcUrls, // rpc地址,
             blockExplorerUrls: config.blockExplorerUrl,
             nativeCurrency: {
               name: config.symbol,

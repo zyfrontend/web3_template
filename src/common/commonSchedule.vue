@@ -24,7 +24,7 @@ defineProps({
   }
 })
 
-let timer = null
+let timer: any = null
 let seed = 10
 const cur = 1
 

@@ -1,4 +1,8 @@
 import Request, { HttpResponse, HttpRequestConfig, HttpError } from 'luch-request'
+import useStatus from '@/hooks/useStatus'
+
+const { istrue } = useStatus()
+
 const BASE_API = 'https://depm.api.tianyantu.com'
 const http = new Request({
   baseURL: BASE_API, //设置请求的base url
@@ -27,6 +31,7 @@ http.interceptors.response.use(
   (response: HttpResponse) => {
     switch (response.config.method) {
       case 'GET':
+        istrue.value = true
         return formatData(response.data)
       case 'POST':
         // 登录接口保存token

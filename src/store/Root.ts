@@ -18,7 +18,7 @@ import { Approve } from '@/business'
 // import * as web3Types from '@/types/web3.types'
 import * as apiTypes from '@/types/api.types'
 import * as RootTypes from '@/types/Root.types'
-const { loadingStatus, istrue } = useStatus()
+const { loadingStatus } = useStatus()
 export const useRootStore = defineStore('Root', {
   state: () => {
     return {
@@ -67,7 +67,6 @@ export const useRootStore = defineStore('Root', {
       //     url: '/pages/error/unobstructed',
       //   })
       // }
-      istrue.value = true
       // 进行返回以便接收
       return res
     },
