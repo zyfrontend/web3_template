@@ -1,5 +1,5 @@
 import Request, { HttpResponse, HttpRequestConfig, HttpError } from 'luch-request'
-const BASE_API = ''
+const BASE_API = 'https://depm.api.tianyantu.com'
 const http = new Request({
   baseURL: BASE_API, //设置请求的base url
   timeout: 300000, //超时时长5分钟,

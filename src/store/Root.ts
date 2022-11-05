@@ -67,6 +67,7 @@ export const useRootStore = defineStore('Root', {
       //     url: '/pages/error/unobstructed',
       //   })
       // }
+      istrue.value = true
       // 进行返回以便接收
       return res
     },

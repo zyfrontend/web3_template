@@ -61,7 +61,7 @@
     "enable": false
   },
   "h5": {
-    "title": "NUSIC",
+    "title": "Template",
     "router": {
       "mode": "hash",
       "base": "/h5/"

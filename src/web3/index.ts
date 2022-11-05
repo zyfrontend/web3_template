@@ -24,7 +24,7 @@ async function init() {
 }
 init()
 const web3 = new Web3(web3Provider)
-
+console.log(web3)
 // 链接钱包
 async function connectWallet() {
   console.log('链接钱包')
@@ -203,13 +203,14 @@ async function mainCurrencyTransaction(obj: mainCurrencyTransactionType) {
 
 function network(config: any) {
   window.ethereum?.request({
-    method: 'wallet_addEthereumChain', // Metamask的api名称
+    // method: 'wallet_addEthereumChain', // Metamask的api名称
+    method: 'wallet_switchEthereumChain', // Metamask的api名称
     params: [
       {
         chainId: `0x${config.chainId.toString(16)}`, // 网络id，16进制的字符串
         chainName: config.chainName, // 添加到钱包后显示的网络名称
         rpcUrls: [
-          config.host // rpc地址
+          web3.currentProvider.networkVersion === config.chainId ? '' : config.host // rpc地址
         ],
         iconUrls: [
           'https://testnet.hecoinfo.com/favicon.png' // 网络的图标，暂时没看到在哪里会显示
@@ -244,7 +245,10 @@ async function addNetwork(config: any) {
           {
             chainId: web3.utils.numberToHex(config.chainId),
             chainName: config.chainName,
-            rpcUrls: config.rpcUrls,
+            // rpcUrls: config.rpcUrls,
+            rpcUrls: [
+              web3.currentProvider.networkVersion === config.chainId ? '' : config.rpcUrls // rpc地址
+            ],
             blockExplorerUrls: config.blockExplorerUrl,
             nativeCurrency: {
               name: config.symbol,
