@@ -64,6 +64,7 @@ module.exports = {
     'no-shadow': 'off', // 允许变量声明与外层作用域的变量同名
     'dot-notation': 'warn', // 要求尽可能地使用点号
     'default-case': 'warn', // 要求switch语句中有default分支
+    'no-cond-assign': 'off',
     eqeqeq: 'warn', // 要求使用 === 和 !==
     curly: 'warn', // 要求所有控制语句使用一致的括号风格
     'space-before-blocks': 'warn', // 要求在块之前使用一致的空格

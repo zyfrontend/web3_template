@@ -1,7 +1,7 @@
 // 代币授权业务
-import useStatus from '@/hooks/useStatus'
+import useStatus from '@/hooks/useStatus' // 一些加载中的状态
 import { writeContract, readContract, getTransaction } from '@/web3'
-import * as types from './types'
+import * as types from './types' // 类型声明
 const { loadingStatus } = useStatus()
 
 // 无限制授权
